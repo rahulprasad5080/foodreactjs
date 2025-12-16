@@ -9,15 +9,11 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const checkUserLoggedIn = async () => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                try {
-                    const { data } = await API.get('/users/profile');
-                    setUser(data);
-                } catch (error) {
-                    localStorage.removeItem('token');
-                    setUser(null);
-                }
+            try {
+                const { data } = await API.get('/users/profile');
+                setUser(data);
+            } catch (error) {
+                setUser(null);
             }
             setLoading(false);
         };
@@ -26,13 +22,12 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         const { data } = await API.post('/auth/login', { email, password });
-        localStorage.setItem('token', data.token);
         setUser(data);
     };
 
     const logout = () => {
-        localStorage.removeItem('token');
         setUser(null);
+        // Note: To fully logout, a backend endpoint clearing the cookie is required.
     };
 
     return (

@@ -4,12 +4,11 @@ import axios from 'axios';
 
 const API = axios.create({
     baseURL: 'https://tasknodejsfood-production.up.railway.app/api',
+    withCredentials: true,
 });
 
 API.interceptors.request.use((req) => {
-    if (localStorage.getItem('token')) {
-        req.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-    }
+    // Token is now handled via HTTP-only cookie automatically
     return req;
 });
 
